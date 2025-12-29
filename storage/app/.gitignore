@@ -1,4 +1,6 @@
 *
-!private/
-!public/
 !.gitignore
+!*.png
+!*.jpg
+!*.jpeg
+!*.gif
