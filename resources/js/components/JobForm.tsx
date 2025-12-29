@@ -81,6 +81,19 @@ export default function JobForm({
         e.preventDefault();
         onSubmit(formData);
     };
+    const handleBranchChange = (branchId: string) => {
+        handleChange('branch_id', branchId);
+
+        const branch = branches.find((b) => b.id.toString() === branchId);
+        if (!branch) return;
+
+        const now = new Date();
+        const year = now.getFullYear().toString(); // last 2 digits ng year
+        const month = (now.getMonth() + 1).toString().padStart(2, '0'); // 01-12
+
+        const rmNo = `${branch.code}-${year}${month}-`;
+        handleChange('rm_no', rmNo);
+    };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -104,25 +117,12 @@ export default function JobForm({
                     />
                 </div>
 
-                <div className="grid gap-2">
-                    <Label>RM No.</Label>
-                    <Input
-                        name="rm_no"
-                        value={formData.rm_no}
-                        onChange={(e) => {
-                            handleChange('rm_no', e.target.value);
-                        }}
-                    />
-                </div>
-
                 <div className="mt-2 grid gap-2">
                     <Label>Branch</Label>
                     <Select
                         name="branch_id"
                         value={formData.branch_id}
-                        onValueChange={(value) =>
-                            handleChange('branch_id', value)
-                        }
+                        onValueChange={handleBranchChange}
                     >
                         <SelectTrigger className="w-full">
                             <SelectValue
@@ -142,6 +142,16 @@ export default function JobForm({
                             ))}{' '}
                         </SelectContent>
                     </Select>
+                </div>
+                <div className="grid gap-2">
+                    <Label>RM No.</Label>
+                    <Input
+                        name="rm_no"
+                        value={formData.rm_no}
+                        onChange={(e) => {
+                            handleChange('rm_no', e.target.value);
+                        }}
+                    />
                 </div>
             </div>
 
